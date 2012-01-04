@@ -1,0 +1,29 @@
+subprojects {
+    apply plugin: 'java'
+    group = 'com.copyright.prototype'
+    version = '1.0.1'
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        compile "org.apache.commons:commons-lang3:3.0.1"
+        testCompile "junit:junit:4.10"
+    }
+}
+
+project(':api') {
+    dependencies {
+        compile project(':common')
+    }
+
+}
+
+project(':producer') {
+    dependencies {
+        compile project(':common'), project(':api')
+    }
+}
+
+dependsOnChildren()
+
+
