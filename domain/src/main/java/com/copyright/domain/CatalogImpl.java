@@ -1,12 +1,13 @@
 package com.copyright.domain;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "catalog")
-public class CatalogImpl implements Catalog {
+public class CatalogImpl implements Catalog, Serializable {
 
     private Set<Publication> publications = new HashSet<Publication>();
 

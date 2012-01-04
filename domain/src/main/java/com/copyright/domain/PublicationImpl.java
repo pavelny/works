@@ -3,10 +3,14 @@ package com.copyright.domain;
 import java.util.Date;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
+@Document
 public class PublicationImpl implements Publication {
-
+    @Id
     private String id;
+
     private String author;
     private String title;
     private String genre;

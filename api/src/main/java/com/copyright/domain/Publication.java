@@ -1,8 +1,9 @@
 package com.copyright.domain;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public interface Publication {
+public interface Publication extends Serializable {
 
     String getId();
 

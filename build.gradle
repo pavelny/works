@@ -1,13 +1,22 @@
 subprojects {
     apply plugin: 'java'
+    apply plugin: 'idea'
     group = 'com.copyright.prototype'
     version = '1.0.1'
     repositories {
         mavenCentral()
+        maven {
+            url "http://maven.springframework.org/milestone"
+        }
+
     }
     dependencies {
-        compile "org.apache.commons:commons-lang3:3.0.1"
-        testCompile "junit:junit:4.10"
+        compile "org.apache.commons:commons-lang3:3.0.1",
+                "org.springframework.data:spring-data-mongodb:1.0.0.RC1",
+                "org.springframework:spring-core:3.1.0.RELEASE",
+                "log4j:log4j:1.2.16"
+        testCompile "junit:junit:4.10","org.springframework:spring-test:3.1.0.RELEASE"
+        testRuntime "org.springframework:spring-jdbc:3.1.0.RELEASE"
     }
 }
 
@@ -18,9 +27,27 @@ project(':api') {
 
 }
 
+project(':domain') {
+    dependencies {
+        compile project(':api'), project(':common')
+    }
+}
+
+project(':repository') {
+    dependencies {
+        compile project(':api'), project(':domain')
+    }
+}
+
+project(':service') {
+    dependencies {
+        compile project(':api'), project(':domain'), project(':repository')
+    }
+}
+
 project(':producer') {
     dependencies {
-        compile project(':common'), project(':api')
+        compile project(':common'), project(':api'), project(':domain'), project(':service')
     }
 }
 
