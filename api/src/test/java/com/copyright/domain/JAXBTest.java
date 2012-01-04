@@ -38,12 +38,8 @@ public class JAXBTest {
 
         JAXBContext jaxbContext = JAXBContext.newInstance(CatalogImpl.class);
         Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
-
-        // output pretty printed
         jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-
         jaxbMarshaller.marshal(catalog, System.out);
-
     }
 
     @Test

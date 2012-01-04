@@ -16,7 +16,7 @@ public class PublicationImplTest{
     private static final String DESCRIPTION = "An in-depth look at creating applications with XML.";
 
     @Test
-    public void testStringProjectPropertyAllowOverrideValue() {
+    public void testGetSet() {
         Publication publication = new PublicationImpl();
         publication.setId(ID);
         publication.setAuthor(AUTHOR);
