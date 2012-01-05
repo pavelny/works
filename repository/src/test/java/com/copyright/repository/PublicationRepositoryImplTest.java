@@ -1,20 +1,24 @@
 package com.copyright.repository;
+
 import com.copyright.domain.Publication;
 import com.copyright.domain.PublicationImpl;
+import com.google.common.collect.Lists;
 import java.util.Date;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Ignore;
+import java.util.List;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertNotNull;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+
+@RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"/repository-spring-test.xml"})
-public class PublicationRepositoryImplTest extends AbstractTransactionalJUnit4SpringContextTests {
+public class PublicationRepositoryImplTest {
 
     private static final String ID = "bk101";
     private static final String AUTHOR = "Gambardella, Matthew";
@@ -25,17 +29,16 @@ public class PublicationRepositoryImplTest extends AbstractTransactionalJUnit4Sp
     private static final String DESCRIPTION = "An in-depth look at creating applications with XML.";
 
     @Autowired
-    protected static PublicationRepository publicationRepository;
+    protected PublicationRepository publicationRepository;
 
-//    @BeforeClass
-//    public static void setUp(){
-//        ((PublicationRepositoryImpl)publicationRepository).createCollection();
-//    }
+    @Before
+    public void setUp() {
+        ((PublicationRepositoryImpl) publicationRepository).createCollection();
+    }
 
-    @Ignore
     @Test
     @SuppressWarnings("unchecked")
-    public void getPublicationById() {
+    public void testGetPublicationById() {
         assertNull(publicationRepository.findById(ID));
         Publication publication = new PublicationImpl();
         publication.setId(ID);
@@ -57,9 +60,62 @@ public class PublicationRepositoryImplTest extends AbstractTransactionalJUnit4Sp
         assertEquals(DESCRIPTION, publication.getDescription());
     }
 
-//    @AfterClass
-//    public static void tearDown(){
-//        ((PublicationRepositoryImpl)publicationRepository).dropCollection();
-//    }
+    @Test
+    @SuppressWarnings("unchecked")
+    public void testFindAll() {
+        assertEquals(0, publicationRepository.findAll().size());
+        Publication publication1 = new PublicationImpl();
+        publication1.setId("1");
+        publicationRepository.save(publication1);
+        Publication publication2 = new PublicationImpl();
+        publication2.setId("2");
+        publicationRepository.save(publication2);
+        Publication publication3 = new PublicationImpl();
+        publication3.setId("3");
+        publicationRepository.save(publication3);
+        List<Publication> result = publicationRepository.findAll();
+        assertEquals(3, result.size());
+    }
 
+    @Test
+    @SuppressWarnings("unchecked")
+    public void testSaveAll() {
+        assertEquals(0, publicationRepository.findAll().size());
+        Publication publication1 = new PublicationImpl();
+        publication1.setId("1");
+        Publication publication2 = new PublicationImpl();
+        publication2.setId("2");
+        Publication publication3 = new PublicationImpl();
+        publication3.setId("3");
+        List<Publication> publications = Lists.newArrayList(publication1, publication2, publication3);
+        publicationRepository.saveAll(publications);
+        List<Publication> result = publicationRepository.findAll();
+        assertEquals(3, result.size());
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    public void testFindByAuthor() {
+        assertEquals(0, publicationRepository.findAll().size());
+        Publication publication1 = new PublicationImpl();
+        publication1.setId("1");
+        publication1.setAuthor("Kernighan");
+        Publication publication2 = new PublicationImpl();
+        publication2.setId("2");
+        publication2.setAuthor("Stroustrup");
+        Publication publication3 = new PublicationImpl();
+        publication3.setId("3");
+        publication3.setAuthor("Kernighan");
+        List<Publication> publications = Lists.newArrayList(publication1, publication2, publication3);
+        publicationRepository.saveAll(publications);
+        List<Publication> result = publicationRepository.findByAuthor("Kernighan");
+        assertEquals(2, result.size());
+        result = publicationRepository.findByAuthor("Stroustrup");
+        assertEquals(1, result.size());
+    }
+
+    @After
+    public void tearDown() {
+        ((PublicationRepositoryImpl) publicationRepository).dropCollection();
+    }
 }

@@ -30,7 +30,6 @@ public class PublicationRepositoryImpl implements PublicationRepository<Publicat
         mongoTemplate.insert(publicationsToSave, PublicationImpl.class);
     }
 
-
     @Override
     public void delete(Publication publication) {
         mongoTemplate.remove(publication);
