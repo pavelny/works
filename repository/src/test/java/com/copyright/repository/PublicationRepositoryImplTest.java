@@ -114,6 +114,26 @@ public class PublicationRepositoryImplTest {
         assertEquals(1, result.size());
     }
 
+    @Test
+    @SuppressWarnings("unchecked")
+    public void testDelete() {
+        assertEquals(0, publicationRepository.findAll().size());
+        Publication publication1 = new PublicationImpl();
+        publication1.setId(ID);
+        Publication publication2 = new PublicationImpl();
+        publication2.setId("2");
+        Publication publication3 = new PublicationImpl();
+        publication3.setId("3");
+        List<Publication> publications = Lists.newArrayList(publication1, publication2, publication3);
+        publicationRepository.saveAll(publications);
+        assertEquals(3, publicationRepository.findAll().size());
+        Publication result = publicationRepository.findById(ID);
+        publicationRepository.delete(result);
+        assertEquals(2, publicationRepository.findAll().size());
+        assertNull(publicationRepository.findById(ID));
+    }
+
+
     @After
     public void tearDown() {
         ((PublicationRepositoryImpl) publicationRepository).dropCollection();
